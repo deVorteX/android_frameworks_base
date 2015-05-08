@@ -60,6 +60,8 @@ public class DozeParameters {
         pw.print("    getPulseOutDuration(): "); pw.println(getPulseOutDuration());
         pw.print("    getPulseOnSigMotion(): "); pw.println(getPulseOnSigMotion());
         pw.print("    getVibrateOnSigMotion(): "); pw.println(getVibrateOnSigMotion());
+        pw.print("    getPulseOnProximity(): "); pw.println(getPulseOnProximity());
+        pw.print("    getVibrateOnProxSensor(): "); pw.println(getVibrateOnProxSensor());
         pw.print("    getPulseOnPickup(): "); pw.println(getPulseOnPickup());
         pw.print("    getVibrateOnPickup(): "); pw.println(getVibrateOnPickup());
         pw.print("    getProxCheckBeforePulse(pickup): "); pw.println(getProxCheckBeforePulse(DozeLog.PULSE_REASON_SENSOR_PICKUP));
@@ -125,12 +127,22 @@ public class DozeParameters {
         return SystemProperties.getBoolean("doze.vibrate.pickup", false);
     }
 
+    public boolean getPulseOnProximity() {
+        return getBoolean("doze.pulse.proximity", R.bool.doze_pulse_on_proximity);
+    }
+
+    public boolean getVibrateOnProxSensor() {
+        return SystemProperties.getBoolean("doze.vibrate.proxsensor", false);
+    }
+
     public boolean getProxCheckBeforePulse(int reason) {
         switch(reason) {
         case DozeLog.PULSE_REASON_SENSOR_PICKUP:
                 return getBoolean("doze.pulse.proxcheck.pickup", R.bool.doze_proximity_check_before_pulse);
         case DozeLog.PULSE_REASON_INTENT:
                 return getBoolean("doze.pulse.proxcheck.intent", R.bool.doze_proximity_check_before_pulse_intent);
+        case DozeLog.PULSE_REASON_SENSOR_PROXIMITY:
+                return false;        
         default:
                 return getBoolean("doze.pulse.proxcheck", R.bool.doze_proximity_check_before_pulse);
         }
